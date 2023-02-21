@@ -1,0 +1,18 @@
+FROM golang:1.20.1 as builder
+WORKDIR /app
+COPY go-work.go go.mod ./
+RUN go build -o go-work-app
+ENTRYPOINT ["./go-work-app"]
+
+
+FROM alpine:3.17  
+ARG USER=worker
+ENV HOME /home/$USER
+RUN apk add --update sudo
+RUN adduser -D $USER \
+        && echo "$USER ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/$USER \
+        && chmod 0440 /etc/sudoers.d/$USER
+USER 1000
+WORKDIR $HOME
+COPY --from=builder /app/go-work-app .
+ENTRYPOINT ["./go-work-app"]

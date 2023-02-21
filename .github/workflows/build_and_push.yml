@@ -1,0 +1,54 @@
+name: BuildAndPushContainer
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'app/**'
+    branches:
+      - master
+
+jobs:
+  buildJob:
+    environment: prod
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          ref: master
+
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: ${{ secrets.ECR_PUSHING_ROLE }}
+          aws-region: eu-central-1
+          role-session-name: OIDCSession
+
+    
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: versioning and build/push   
+        run: |
+          #bump version in VERSION.md
+          sed -i 's/\.[0-9]\+$/.'$(($(cat VERSION.md|cut -d. -f3)+1))'/g' VERSION.md
+
+          #bump version tag in values.yaml of the helm chart
+          sed -i 's/\(tag: "\)[0-9]\+\.[0-9]\+\.[0-9]\+"$/\1'$(cat VERSION.md)'"/g' go-work-chart/values.yaml
+
+          #commit and push versioning changes
+          git config --global user.name "VERSIONING BOT"
+          git config --global user.email "versioning@bot.github"
+          git commit -am "GITHUB VERSIONING BOT BUMPING VERSION TO $(cat VERSION.md)"
+          git push
+
+          #produce new docker image and push to ECR
+          cd app
+          docker build -t ${{ steps.login-ecr.outputs.registry }}/go-work:$(cat ../VERSION.md) -f Dockerfile.multistage .
+          docker push ${{ steps.login-ecr.outputs.registry }}/go-work:$(cat ../VERSION.md)

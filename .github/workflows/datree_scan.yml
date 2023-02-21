@@ -1,0 +1,32 @@
+name: Sacn helm charts with datree
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - PR
+    
+env:
+  DATREE_TOKEN: ${{ secrets.DATREE_TOKEN }} 
+
+jobs:
+  k8sPolicyCheck:
+    runs-on: ubuntu-latest
+    environment: prod
+    permissions:
+      contents: read # for actions/checkout to fetch code
+      security-events: write # for github/codeql-action/upload-sarif to upload SARIF results
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        
+      - name: Run Datree Policy Check
+        uses: datreeio/action-datree@main
+        with:
+          path: 'go-work-chart'
+          isHelmChart: true
+          cliArguments: "-o simple"
+
+      #- name: Upload result to GitHub Code Scanning
+      #  uses: github/codeql-action/upload-sarif@v2
+      #  with:
+      #    sarif_file: datree.sarif
