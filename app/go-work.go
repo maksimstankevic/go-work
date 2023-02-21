@@ -66,7 +66,7 @@ func main() {
 		}
 		counter++
 		if counter == 12 {
-			fmt.Print("60 sec heartbeat\n")
+			fmt.Print("--- 60 sec heartbeat ---\n")
 			counter = 0
 		}
 	}
