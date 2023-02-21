@@ -3,6 +3,10 @@ variable "region" {
   default = "eu-central-1"
 }
 
+variable "role_arn" {
+  type    = string
+}
+
 variable "cluster_name" {
   type    = string
   default = "go-work-eks"

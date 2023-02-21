@@ -59,7 +59,7 @@ resource "aws_iam_role" "iam_role_for_cluster_autoscaler" {
   })
 }
 
-resource "kubernetes_service_account" "cluster_autoscaler_service_account" {
+/* resource "kubernetes_service_account" "cluster_autoscaler_service_account" {
   metadata {
     name = "cluster-autoscaler"
     namespace = "kube-system"
@@ -67,4 +67,4 @@ resource "kubernetes_service_account" "cluster_autoscaler_service_account" {
       "eks.amazonaws.com/role-arn" = aws_iam_role.iam_role_for_cluster_autoscaler.arn
     }
   }
-}
+} */

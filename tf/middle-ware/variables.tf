@@ -3,6 +3,10 @@ variable "region" {
   default = "eu-central-1"
 }
 
+variable "role_arn" {
+  type    = string
+}
+
 variable "cluster_name" {
   type    = string
   default = "go-work-eks"
@@ -171,5 +175,5 @@ variable "polaris_goldilocks_revision" {
 
 variable "efs_id" {
   type        = string
-  default     = "fs-0125dee35f072ede6"
+  default     = "fs-0842fc0d9c4205a94"
 }
