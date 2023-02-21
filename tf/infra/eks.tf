@@ -39,7 +39,7 @@ module "eks" {
     },
   ]
 
-  /* cluster_addons = {
+  cluster_addons = {
     coredns = {
       most_recent = true
     }
@@ -52,7 +52,7 @@ module "eks" {
     aws-ebs-csi-driver = {
       most_recent = true
     }
-  } */
+  }
 
 
   self_managed_node_group_defaults = {
