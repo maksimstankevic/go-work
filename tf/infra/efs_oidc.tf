@@ -65,7 +65,7 @@ resource "aws_iam_role" "iam_role_for_ebs_csi_driver" {
   })
 }
 
-/* resource "kubernetes_service_account" "efs_driver_service_account" {
+resource "kubernetes_service_account" "efs_driver_service_account" {
   metadata {
     name = "efs-csi-controller-sa"
     namespace = "kube-system"
@@ -73,4 +73,4 @@ resource "aws_iam_role" "iam_role_for_ebs_csi_driver" {
       "eks.amazonaws.com/role-arn" = aws_iam_role.iam_role_for_ebs_csi_driver.arn
     }
   }
-} */
+}

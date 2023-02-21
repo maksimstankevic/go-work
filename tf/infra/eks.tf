@@ -1,4 +1,4 @@
-/* data "aws_eks_cluster" "cluster" {
+data "aws_eks_cluster" "cluster" {
   name = var.cluster_name
 }
 
@@ -11,7 +11,7 @@ provider "kubernetes" {
    cluster_ca_certificate = base64decode(data.aws_eks_cluster.cluster.certificate_authority.0.data)
    token                  = data.aws_eks_cluster_auth.cluster.token
    #load_config_file       = false
-} */
+}
 
 
 module "eks" {
@@ -29,7 +29,7 @@ module "eks" {
 
   cluster_endpoint_public_access_cidrs = var.eks_access_ip_list
 
-  create_aws_auth_configmap = false
+  create_aws_auth_configmap = true
 
   aws_auth_roles = [
     {
