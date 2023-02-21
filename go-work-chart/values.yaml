@@ -8,7 +8,7 @@ image:
   repository: 556388192794.dkr.ecr.eu-central-1.amazonaws.com/go-work
   pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "1.1.5"
+  tag: "2.0.1"
 
 imagePullSecrets: []
 nameOverride: ""
