@@ -175,5 +175,5 @@ variable "polaris_goldilocks_revision" {
 
 variable "efs_id" {
   type        = string
-  default     = "fs-0842fc0d9c4205a94"
+  default     = "fs-013dbaf30d94ecd8f"
 }
